@@ -14,5 +14,7 @@ Stap 2: connect device
 
 Stap 3: connect to wifi
 
+https://github.com/jasbur/RaspiWiFi  <<-- Image needed for headless wifi config
+
 
 
