@@ -38,7 +38,8 @@ apt-get install influxdb-client </br>
 sudo systemctl start influxdb</br>
 
 4) Installatie node-red </br>
-bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
+bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered) </br>
+sudo systemctl enable nodered.service </br>
 
 
 
