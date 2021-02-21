@@ -34,6 +34,7 @@ sudo systemctl enable grafana-server && sudo systemctl start grafana-server </br
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add - </br>
 source /etc/os-release </br>
 sudo apt-get update && sudo apt-get install influxdb</br>
+apt-get install influxdb-client </br>
 sudo systemctl start influxdb</br>
 
 
