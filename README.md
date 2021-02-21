@@ -19,8 +19,17 @@ Ontwikkeling:
 
 1) headless image met wifi portal config
 https://github.com/jasbur/RaspiWiFi  <<-- Image needed for headless wifi config
+ a) raspi-config to enable SSH GPIO Serial etc...
 
 2) installatie Grafana
+a) find latest package for raspberry pi zero: https://dl.bintray.com/fg2it/deb-rpi-1b/main/g/
+
+sudo apt-get install adduser libfontconfig
+curl -L https://dl.bintray.com/fg2it/deb-rpi-1b/main/g/grafana_5.1.4_armhf.deb -o /tmp/grafana_5.1.4_armhf.deb
+sudo dpkg -i /tmp/grafana_5.1.4_armhf.deb
+
+sudo systemctl daemon-reload
+sudo systemctl enable grafana-server && sudo systemctl start grafana-server
 
 
 
