@@ -30,6 +30,12 @@ sudo dpkg -i /tmp/grafana_5.1.4_armhf.deb </br>
 sudo systemctl daemon-reload </br>
 sudo systemctl enable grafana-server && sudo systemctl start grafana-server </br>
 
+3) Installatie influxdb </br>
+curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add - </br>
+source /etc/os-release </br>
+sudo apt-get update && sudo apt-get install influxdb</br>
+sudo systemctl start influxdb</br>
+
 
 
 
