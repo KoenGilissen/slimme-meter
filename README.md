@@ -41,6 +41,9 @@ sudo systemctl start influxdb</br>
 bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered) </br>
 sudo systemctl enable nodered.service </br>
 
+5) UART config </br>
+https://www.raspberrypi.org/documentation/configuration/uart.md </br>
+
 
 
 
