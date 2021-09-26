@@ -1,0 +1,300 @@
+[
+    {
+        "id": "0dee9ac0a1e9bcea",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "8190bb23.99dd38",
+        "type": "tab",
+        "label": "Main flow",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3eee813.1c6577e",
+        "type": "serial-port",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "115200",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "/",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "6767568eb8cb9f13",
+        "type": "modbus-client",
+        "name": "RS485",
+        "clienttype": "simpleser",
+        "bufferCommands": true,
+        "stateLogEnabled": true,
+        "queueLogEnabled": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB1",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "500",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "50",
+        "parallelUnitIdsAllowed": false
+    },
+    {
+        "id": "d18878ae8c5cedb2",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "digitalEnergy",
+        "name": "influx",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "2124856e.6fe7ba",
+        "type": "serial in",
+        "z": "8190bb23.99dd38",
+        "name": "digitale_meter",
+        "serial": "3eee813.1c6577e",
+        "x": 90,
+        "y": 220,
+        "wires": [
+            [
+                "14aa5d84.bed7c2"
+            ]
+        ]
+    },
+    {
+        "id": "14aa5d84.bed7c2",
+        "type": "function",
+        "z": "8190bb23.99dd38",
+        "name": "Digitale Meter Data",
+        "func": "const h_kwh_from_grid_kWh_t1 = \"1-0:1.8.1\";\nconst h_kwh_from_grid_kWh_t2 = \"1-0:1.8.2\"; \nconst h_kwh_to_grid_kWh_t1 = \"1-0:2.8.1\";\nconst h_kwh_to_grid_kWh_t2 = \"1-0:2.8.2\";\nconst h_instantaneous_power_kW_from_grid = \"1-0:1.7.0\";\nconst h_instantaneous_power_kW_to_grid = \"1-0:2.7.0\";\nconst h_instantaneous_voltage_L1 = \"1-0:32.7.0\";\nconst h_instantaneous_voltage_L2 = \"1-0:52.7.0\";\nconst h_instantaneous_voltage_L3 =  \"1-0:72.7.0\";\nconst h_instantaneous_current_L1 = \"1-0:31.7.0\";\nconst h_instantaneous_current_L2 = \"1-0:51.7.0\";\nconst h_instantaneous_current_L3 = \"1-0:71.7.0\";\nconst h_gas_consumption_m3 = \"0-1:24.2.3\";\n\nvar v_kwh_from_grid_kWh_t1 = 0.0;\nvar v_kwh_from_grid_kWh_t2 = 0.0; \nvar v_kwh_to_grid_kWh_t1 = 0.0;\nvar v_kwh_to_grid_kWh_t2 = 0.0;\nvar v_instantaneous_power_kW_from_grid = 0.0;\nvar v_instantaneous_power_kW_to_grid = 0.0;\nvar v_instantaneous_voltage_L1 = 0.0;\nvar v_instantaneous_voltage_L2 = 0.0;\nvar v_instantaneous_voltage_L3 =  0.0;\nvar v_instantaneous_current_L1 = 0.0;\nvar v_instantaneous_current_L2 = 0.0;\nvar v_instantaneous_current_L3 = 0.0;\nvar v_gas_consumption_m3 = 0.0;\n\nv_kwh_from_grid_kWh_t1 = parseFloat(msg.payload.substr(msg.payload.search(h_kwh_from_grid_kWh_t1)+11, 9));\nv_kwh_from_grid_kWh_t2 = parseFloat(msg.payload.substr(msg.payload.search(h_kwh_from_grid_kWh_t2)+11, 9));\nv_kwh_to_grid_kWh_t1 = parseFloat(msg.payload.substr(msg.payload.search(h_kwh_to_grid_kWh_t1)+11, 9));\nv_kwh_to_grid_kWh_t2 = parseFloat(msg.payload.substr(msg.payload.search(h_kwh_to_grid_kWh_t2)+11, 9));\nv_instantaneous_power_kW_from_grid = parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_power_kW_from_grid)+11, 9));\nv_instantaneous_power_kW_to_grid = parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_power_kW_to_grid)+11, 9));\nv_instantaneous_voltage_L1 = parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_voltage_L1)+11, 9));\nv_instantaneous_voltage_L2 = parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_voltage_L2)+11, 9));\nv_instantaneous_voltage_L3 =  parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_voltage_L3)+11, 9));\nv_instantaneous_current_L1 = parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_current_L1)+11, 9));\nv_instantaneous_current_L2 = parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_current_L2)+11, 9));\nv_instantaneous_current_L3 = parseFloat(msg.payload.substr(msg.payload.search(h_instantaneous_current_L3)+11, 9));\nv_gas_consumption_m3 = parseFloat(msg.payload.substr(msg.payload.search(h_gas_consumption_m3)+26, 9));\n\n//msg.topic=\"INSERT INTO SmartMeter(kwh_from_grid_kWh_t1, kwh_from_grid_kWh_t2, kwh_to_grid_kWh_t1, kwh_to_grid_kWh_t2, instantaneous_power_kW_from_grid, instantaneous_power_kW_to_grid, instantaneous_voltage_L1, instantaneous_voltage_L2, instantaneous_voltage_L3, instantaneous_current_L1, instantaneous_current_L2, instantaneous_current_L3, gas_consumption_m3, timestamp) VALUES ('\" + v_kwh_from_grid_kWh_t1 + \"', '\" + v_kwh_from_grid_kWh_t2 + \"', '\" + v_kwh_to_grid_kWh_t1 +\"', '\" + v_kwh_to_grid_kWh_t2 +\"', '\" + v_instantaneous_power_kW_from_grid +\"', '\" + v_instantaneous_power_kW_to_grid +\"', '\" + v_instantaneous_voltage_L1 +\"', '\" + v_instantaneous_voltage_L2 +\"', '\" + v_instantaneous_voltage_L3 +\"', '\" + v_instantaneous_current_L1 +\"', '\" + v_instantaneous_current_L2 +\"', '\" + v_instantaneous_current_L3 +\"', '\" + v_gas_consumption_m3 +\"', '\" + timestamp +\"')\";\nmsg.payload = {\n    kwh_from_grid_kWh_t1: +v_kwh_from_grid_kWh_t1,\n    kwh_from_grid_kWh_t2: +v_kwh_from_grid_kWh_t2, \n    kwh_to_grid_kWh_t1: +v_kwh_to_grid_kWh_t1,\n    kwh_to_grid_kWh_t2: +v_kwh_to_grid_kWh_t2,\n    instantaneous_power_kW_from_grid: +v_instantaneous_power_kW_from_grid,\n    instantaneous_power_kW_to_grid: +v_instantaneous_power_kW_to_grid,\n    instantaneous_voltage_L1: +v_instantaneous_voltage_L1,\n    instantaneous_voltage_L2: +v_instantaneous_voltage_L2,\n    instantaneous_voltage_L3: +v_instantaneous_voltage_L3,\n    instantaneous_current_L1: +v_instantaneous_current_L1,\n    instantaneous_current_L2: +v_instantaneous_current_L2,\n    instantaneous_current_L3: +v_instantaneous_current_L3,\n    gas_consumption_m3: +v_gas_consumption_m3\n};\nmsg.topic = \"DigitaleMeter\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 220,
+        "wires": [
+            [
+                "f03a1be4.58fd98",
+                "8d7ebe049f70a74c"
+            ]
+        ]
+    },
+    {
+        "id": "4067f2c0.cdf2dc",
+        "type": "function",
+        "z": "8190bb23.99dd38",
+        "name": "PV Active Power",
+        "func": "var powerMSB = msg.payload[0];\nvar powerLSB = msg.payload[1];\nvar power = ((powerMSB << 8) + powerLSB)/1000;\nmsg.payload = power;\nmsg.topic = \"Inverter\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 400,
+        "wires": [
+            [
+                "f03a1be4.58fd98",
+                "c630c4e567faf54e"
+            ]
+        ]
+    },
+    {
+        "id": "f03a1be4.58fd98",
+        "type": "join",
+        "z": "8190bb23.99dd38",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": true,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 550,
+        "y": 300,
+        "wires": [
+            [
+                "c96747e.4f625b8"
+            ]
+        ]
+    },
+    {
+        "id": "c96747e.4f625b8",
+        "type": "function",
+        "z": "8190bb23.99dd38",
+        "name": "Format data for Influxdb",
+        "func": "var power_consumption_kW = msg.payload.Inverter + msg.payload.DigitaleMeter.instantaneous_power_kW_from_grid - msg.payload.DigitaleMeter.instantaneous_power_kW_to_grid;\n\nmsg.payload = [{\n    kwh_from_grid_kWh_t1: +msg.payload.DigitaleMeter.kwh_from_grid_kWh_t1,\n    kwh_from_grid_kWh_t2: +msg.payload.DigitaleMeter.kwh_from_grid_kWh_t2, \n    kwh_to_grid_kWh_t1: +msg.payload.DigitaleMeter.kwh_to_grid_kWh_t1,\n    kwh_to_grid_kWh_t2: +msg.payload.DigitaleMeter.kwh_to_grid_kWh_t2,\n    instantaneous_power_kW_from_grid: +msg.payload.DigitaleMeter.instantaneous_power_kW_from_grid, \n    instantaneous_power_kW_to_grid: +msg.payload.DigitaleMeter.instantaneous_power_kW_to_grid,\n    instantaneous_voltage_L1: +msg.payload.DigitaleMeter.instantaneous_voltage_L1,\n    instantaneous_voltage_L2: +msg.payload.DigitaleMeter.instantaneous_voltage_L2,\n    instantaneous_voltage_L3: +msg.payload.DigitaleMeter.instantaneous_voltage_L3,\n    instantaneous_current_L1: +msg.payload.DigitaleMeter.instantaneous_current_L1,\n    instantaneous_current_L2: +msg.payload.DigitaleMeter.instantaneous_current_L2,\n    instantaneous_current_L3: +msg.payload.DigitaleMeter.instantaneous_current_L3,\n    gas_consumption_m3: +msg.payload.DigitaleMeter.gas_consumption_m3,\n    pv_power_kW: + msg.payload.Inverter,\n    power_consumption_kW:+ power_consumption_kW\n},\n{\n    tag1:\"Measurement\"\n}];\n\nmsg.measurement=\"datapoint\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 300,
+        "wires": [
+            [
+                "580ee6f59e244a6b",
+                "353ccdec62f9c624"
+            ]
+        ]
+    },
+    {
+        "id": "8d7ebe049f70a74c",
+        "type": "debug",
+        "z": "8190bb23.99dd38",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "5f2e1bbbeb21a280",
+        "type": "modbus-read",
+        "z": "8190bb23.99dd38",
+        "name": "SUN2000",
+        "topic": "Inverter",
+        "showStatusActivities": true,
+        "logIOActivities": false,
+        "showErrors": false,
+        "unitid": "",
+        "dataType": "HoldingRegister",
+        "adr": "32080",
+        "quantity": "2",
+        "rate": "1",
+        "rateUnit": "s",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "6767568eb8cb9f13",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 90,
+        "y": 400,
+        "wires": [
+            [
+                "4067f2c0.cdf2dc",
+                "599b04a66caf46a5"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "599b04a66caf46a5",
+        "type": "debug",
+        "z": "8190bb23.99dd38",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "580ee6f59e244a6b",
+        "type": "debug",
+        "z": "8190bb23.99dd38",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "c630c4e567faf54e",
+        "type": "debug",
+        "z": "8190bb23.99dd38",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "4e77752075d82c7a",
+        "type": "comment",
+        "z": "8190bb23.99dd38",
+        "name": "connection issue - Solution",
+        "info": "sudo chmod a+rw /dev/ttyUSB1\n\n\n sudo adduser wizard dialout --> ok if nodered is owned by user 'wizard'",
+        "x": 130,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "353ccdec62f9c624",
+        "type": "influxdb out",
+        "z": "8190bb23.99dd38",
+        "influxdb": "d18878ae8c5cedb2",
+        "name": "digitalEnergy Database",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1100,
+        "y": 180,
+        "wires": []
+    }
+]
